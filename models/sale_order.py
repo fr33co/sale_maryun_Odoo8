@@ -47,15 +47,22 @@ class InvoiceMaryun(models.Model):
         +'B'+lineas+';'+ '\n'\
         +'Z;1;1;1;;'
 
-        filename = "archivo.txt"
-        try:
-            f = open("/tmp/%s" % filename, "w")
+        #Ubicar el archivo en un directorio del sistema de archivos
+        filepath_obj = self.env['account.filepath'].search([('txt_boolen','in',True)])
+        filename = (str(unicode(self.partner_id.name).encode("utf-8"))).replace(" ", "") + "-" + datetime.now().strftime('%H:%M') + ".txt"
+        for path in filepath_obj:
+            total_path = path.txt_path + "/" + datetime.now().strftime('%d%m%Y')
+            if not os.path.exists(total_path):
+                os.makedirs(total_path)
+            print path.txt_path
             try:
-                f.writelines( "%s" % content)
-            finally:
-                f.close()
-        except IOError:
-            pass
+                f = open("%s/%s" % (total_path, filename), "w")
+                try:
+                    f.writelines( "%s" % content)
+                finally:
+                    f.close()
+            except IOError:
+                pass
 
         return self.write({
             'txt_filename': ("%s" % filename),
