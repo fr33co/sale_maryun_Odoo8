@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Accoun File Path -->
+
+        <record model="ir.actions.act_window" id="ruta_archivos_action">
+            <field name="name">Ruta de archivos</field>
+            <field name="res_model">account.filepath</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_account_filepath_form" model="ir.ui.view">
+            <field name="name">account.filepath.form</field>
+            <field name="model">account.filepath</field>
+            <field name="arch" type="xml">
+                <form string="Account File Path">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="txt_path"/>
+                            </group>
+                            <group>
+                                <field name="txt_boolen"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_account_filepath_tree" model="ir.ui.view">
+            <field name="name">account.filepath.tree</field>
+            <field name="model">account.filepath</field>
+            <field name="arch" type="xml">
+              <tree colors="blue:txt_boolen == 'True';gray:txt_boolen == 'False' " string="Rutas de archivos">
+                    <field name="txt_path"/>
+                    <field name="txt_boolen"/>
+                </tree>
+            </field>
+        </record>
+
+        <menuitem id="filepath_menu" name="Ruta de archivos" parent="account.menu_finance_configuration" sequence="100" />
+        <menuitem id="child_filepath_menu" name="Definir rutas" parent="filepath_menu" action="ruta_archivos_action" sequence="1"/>
+
+    </data>
+</openerp>

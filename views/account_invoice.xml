@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- Definimos la accion --> 
+
+        <record model="ir.ui.view" id="account_invoice_maryun_inherit">
+                <field name="name">account.invoice.maryun.inherit</field>
+                <field name="model">account.invoice</field>
+                <field name="type">form</field>
+                <field name="inherit_id" ref="account.invoice_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//notebook[last()]" position="inside">
+                        <page string="Facturacion TXT" name="geo_localization">
+                            <group colspan="2" col="2">
+                                <separator string="Facturacion TXT" colspan="2"/>
+                                <button name="generate_file" type="object" string="Generar Factura TXT"/>
+                                <field name="txt_filename" invisible="1"/>
+                            <field name="txt_binary" filename="txt_filename" readonly="1" string="Descarga el archivo"/>
+                            </group>
+                        </page>
+                    </xpath>
+                    <!-- <field name="invoice_line" position="after">
+                            <button name="generate_file" type="object" string="Generar Factura TXT"/>
+                            <field name="txt_filename" invisible="1"/>
+                            <field name="txt_binary" filename="txt_filename" readonly="1"/>
+                    </field> --> 
+                </field>
+        </record>
+ 
+    </data>
+</openerp>
+
+

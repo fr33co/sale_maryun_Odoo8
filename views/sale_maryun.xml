@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- Definimos la accion --> 
+
+        <record model="ir.ui.view" id="sale_order_maryun_inherit">
+                <field name="name">sale.order.maryun.inherit</field>
+                <field name="model">sale.order</field>
+                <field name="type">form</field>
+                <field name="inherit_id" ref="sale.view_order_form"/>
+                <field name="arch" type="xml">
+                    <field name="client_order_ref" position="after">
+                            <!--<field name="forma_pago"/>-->
+                            <field name="metodo_despacho"/>
+                            <field name="documento_tributario"/>
+                    </field>
+                </field>
+        </record>
+ 
+    </data>
+</openerp>
