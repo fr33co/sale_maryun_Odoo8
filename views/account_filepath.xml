@@ -33,7 +33,7 @@
             <field name="name">account.filepath.tree</field>
             <field name="model">account.filepath</field>
             <field name="arch" type="xml">
-              <tree colors="blue:txt_boolen == 'True';gray:txt_boolen == 'False' " string="Rutas de archivos">
+              <tree colors="blue:txt_boolen == True;gray:txt_boolen == False " string="Rutas de archivos">
                     <field name="txt_path"/>
                     <field name="txt_boolen"/>
                 </tree>
