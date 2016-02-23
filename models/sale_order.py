@@ -38,6 +38,8 @@ class InvoiceMaryun(models.Model):
             lineas = str(txt.price_unit)
         self.lineas = lineas
 
+        contenido_total = ''
+
         #Contenido txt 1
         content_1 = 'A0;;;;;;;;;;;' +'\n'\
         +'A;'+';33;'+';1.0;'+';1;'+';'+ str(self.date_due)+';;;;;;;;;;;;;'+str(self.date_due)+';'+str(self.company_id.vat)+';'+str(self.company_id.display_name)\
@@ -45,6 +47,8 @@ class InvoiceMaryun(models.Model):
         +';;;'+str(self.partner_id.vat)+';;'+str(unicode(self.partner_id.name).encode("utf-8"))+';;'+str(unicode(self.partner_id.street).encode("utf-8"))+';'+str(unicode(self.partner_id.state_id).encode("utf-8"))\
         +';'+str(unicode(self.partner_id.city).encode("utf-8"))+';;;;;;;NO ESPECIFICA;;;'+str(int(round(self.amount_untaxed)))+';0;;19;'+str(int(round(self.amount_tax)))+';;;;;;'+str(int(round(self.amount_total)))+';;;'+'\n'\
         +'A1;501020;'+'\n'\
+
+        contenido_total += content_1
 
         #Ubicar el archivo en un directorio del sistema de archivos
         filepath_obj = self.env['account.filepath'].search([('txt_boolen','=',True)])
@@ -63,9 +67,11 @@ class InvoiceMaryun(models.Model):
                         lineas = str(txt.price_unit)
                         #Contenido txt 2 - Lineas de factura
                         content_2 = "B;%s;" % lineas
+                        contenido_total += "%s\n" % content_2
                         f.writelines( "%s\n" % content_2)
                     #Contenido txt 3
                     content_3 = 'Z;1;1;1;;'
+                    contenido_total += content_3
                     f.writelines( "%s" % content_3)
                 finally:
                     f.close()
@@ -74,5 +80,5 @@ class InvoiceMaryun(models.Model):
 
         return self.write({
             'txt_filename': ("%s" % filename),
-            'txt_binary': base64.encodestring(content_1)
+            'txt_binary': base64.encodestring(contenido_total)
         })
