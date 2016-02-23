@@ -36,25 +36,19 @@ class InvoiceMaryun(models.Model):
         lineas = ''
         for txt in self.invoice_line:
             lineas = str(txt.price_unit)
-            print lineas
         self.lineas = lineas
 
-        content = 'A0;;;;;;;;;;;' +'\n'\
+        #Contenido txt 1
+        content_1 = 'A0;;;;;;;;;;;' +'\n'\
         +'A;'+';33;'+';1.0;'+';1;'+';'+ str(self.date_due)+';;;;;;;;;;;;;'+str(self.date_due)+';'+str(self.company_id.vat)+';'+str(self.company_id.display_name)\
         +';;;'+str(unicode(self.company_id.street).encode("utf-8"))+';'+str(unicode(self.company_id.state_id).encode("utf-8"))+';'+str(unicode(self.company_id.city).encode("utf-8"))\
         +';;;'+str(self.partner_id.vat)+';;'+str(unicode(self.partner_id.name).encode("utf-8"))+';;'+str(unicode(self.partner_id.street).encode("utf-8"))+';'+str(unicode(self.partner_id.state_id).encode("utf-8"))\
         +';'+str(unicode(self.partner_id.city).encode("utf-8"))+';;;;;;;NO ESPECIFICA;;;'+str(int(round(self.amount_untaxed)))+';0;;19;'+str(int(round(self.amount_tax)))+';;;;;;'+str(int(round(self.amount_total)))+';;;'+'\n'\
         +'A1;501020;'+'\n'\
-        +'B' + ';' + lineas + ';' + '\n'\
-        +'Z;1;1;1;;'
-
-        print content
 
         #Ubicar el archivo en un directorio del sistema de archivos
         filepath_obj = self.env['account.filepath'].search([('txt_boolen','=',True)])
-        print filepath_obj
         filename = ((str(unicode(self.partner_id.name).encode("utf-8"))).replace(" ", "")).decode("utf-8") + "-" + datetime.now().strftime('%H:%M') + ".txt"
-        print filename
         for path in filepath_obj:
             total_path = path.txt_path + "/" + datetime.now().strftime('%d%m%Y')
             if not os.path.exists(total_path):
@@ -63,7 +57,16 @@ class InvoiceMaryun(models.Model):
             try:
                 f = open("%s/%s" % (total_path, filename), "w")
                 try:
-                    f.writelines( "%s" % content)
+                    f.writelines( "%s" % content_1)
+                    lineas = ''
+                    for txt in self.invoice_line:
+                        lineas = str(txt.price_unit)
+                        #Contenido txt 2 - Lineas de factura
+                        content_2 = "B;%s;" % lineas
+                        f.writelines( "%s\n" % content_2)
+                    #Contenido txt 3
+                    content_3 = 'Z;1;1;1;;'
+                    f.writelines( "%s" % content_3)
                 finally:
                     f.close()
             except IOError:
@@ -71,5 +74,5 @@ class InvoiceMaryun(models.Model):
 
         return self.write({
             'txt_filename': ("%s" % filename),
-            'txt_binary': base64.encodestring(content)
+            'txt_binary': base64.encodestring(content_1)
         })
