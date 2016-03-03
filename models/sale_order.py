@@ -23,8 +23,10 @@ class SaleMaryun(models.Model):
 class InvoiceMaryun(models.Model):
     _inherit = 'account.invoice'
 
+
     txt_filename = fields.Char()
     txt_binary = fields.Binary()
+
 
     @api.one
     @api.depends('partner_id.name','date_due','amount_total','amount_untaxed','amount_tax','company_id.display_name', 'company_id.vat', 'company_id.street',\
