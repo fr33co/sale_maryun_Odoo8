@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'views/account_workflow.xml',
         'views/account_invoice.xml',
         'views/sale_maryun.xml',
         'views/account_filepath.xml',

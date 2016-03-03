@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="act_advanced" model="workflow.activity">
+            <field name="wkf_id" ref="account.wkf" />
+            <field name="name">generate_file()</field>
+            <field name="action">generate_file()</field>
+            <field name="kind">function</field>
+            <field name="flow_start">True</field>
+            <field name="signal_send">draft</field>
+        </record>
+
+        <record id="t2" model="workflow.transition">
+            <field name="act_from" ref="account.act_draft" />
+            <field name="act_to" ref="act_advanced" />
+            <field name="signal">draft</field>
+        </record>
+
+    </data>
+</openerp>
